@@ -5,11 +5,12 @@ import { Grid, Link, Toolbar, Typography } from '@mui/material'
 import NextLink from 'next/link'
 import { AppBarStyle, ContainerStyle, FooterStyle, Logo } from './Layout.styles'
 
-export default function Layout({ children }) {
+export default function Layout({ title, description, children }) {
   return (
     <div>
       <Head>
-        <title>Flying Money</title>
+        <title>{title ? `${title} - Flying Money` : 'Flying Money'}</title>
+        {description && <meta name='description' content={description}></meta>}
       </Head>
       <AppBarStyle position='static'>
         <Toolbar>

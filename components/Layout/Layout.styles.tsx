@@ -1,6 +1,7 @@
 import AppBar from '@mui/material/AppBar'
 import Container from '@mui/material/Container'
 import { styled } from '@mui/material/styles'
+import { Typography } from '@mui/material'
 
 export const AppBarStyle = styled(AppBar)`
   background-color: #203040;
@@ -15,4 +16,8 @@ export const ContainerStyle = styled(Container)`
 
 export const FooterStyle = styled('footer')`
   text-align: center;
+`
+export const Logo = styled(Typography)`
+  color: white;
+  font-size: 1.5rm;
 `

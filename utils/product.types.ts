@@ -1,4 +1,4 @@
-export interface product {
+export interface Product {
   name: string
   slug: string
   category: string
@@ -12,5 +12,5 @@ export interface product {
 }
 
 export interface data {
-  products: product[]
+  Products: Product[]
 }

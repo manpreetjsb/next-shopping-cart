@@ -1,7 +1,7 @@
 import AppBar from '@mui/material/AppBar'
 import Container from '@mui/material/Container'
 import { styled } from '@mui/material/styles'
-import { Typography } from '@mui/material'
+import Typography from '@mui/material/Typography'
 
 export const AppBarStyle = styled(AppBar)`
   background-color: #203040;

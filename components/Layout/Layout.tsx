@@ -1,13 +1,22 @@
 import React from 'react'
 import Head from 'next/head'
-import { Box } from '@mui/system'
-import { Grid, Link, Toolbar, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 import NextLink from 'next/link'
 import { AppBarStyle, ContainerStyle, FooterStyle, Logo } from './Layout.styles'
 
-export default function Layout({ title, description, children }) {
+interface props {
+  title: string
+  description: string
+  children: JSX.Element | JSX.Element[]
+}
+
+const Layout: React.FC<props> = ({ title, description, children }) => {
   return (
-    <div>
+    <>
       <Head>
         <title>{title ? `${title} - Flying Money` : 'Flying Money'}</title>
         {description && <meta name='description' content={description}></meta>}
@@ -39,6 +48,7 @@ export default function Layout({ title, description, children }) {
           <Typography>All rights reserved. © 2022.</Typography>
         </Box>
       </FooterStyle>
-    </div>
+    </>
   )
 }
+export default Layout

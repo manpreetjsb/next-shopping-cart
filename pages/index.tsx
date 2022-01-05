@@ -1,22 +1,20 @@
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Link,
-  Typography,
-} from '@mui/material'
+import { CardActionArea } from '@mui/material'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
 import NextLink from 'next/link'
 import Layout from '../components/Layout/Layout'
 
 import data from '../utils/data'
 
-export default function Home() {
+const Home = () => {
   return (
-    <Layout>
+    <Layout title={'hello'} description={'undefined'}>
       <div>
         <h1>Products</h1>
         <Grid container spacing={3}>
@@ -31,7 +29,7 @@ export default function Home() {
                       title={product.name}
                     ></CardMedia>
                     <CardContent>
-                      <Typography component='h5' variant='h5'>
+                      <Typography component='h5' variant='h3'>
                         {product.name}
                       </Typography>
                     </CardContent>
@@ -39,9 +37,11 @@ export default function Home() {
                 </NextLink>
                 <CardActions>
                   <Typography>{product.price} €</Typography>
-                  <Button size='small' color='primary'>
-                    Add to cart
-                  </Button>
+                  <Box ml={1}>
+                    <Button size='small' variant='contained' color='secondary'>
+                      Add to cart
+                    </Button>
+                  </Box>
                 </CardActions>
               </Card>
             </Grid>
@@ -51,3 +51,5 @@ export default function Home() {
     </Layout>
   )
 }
+
+export default Home

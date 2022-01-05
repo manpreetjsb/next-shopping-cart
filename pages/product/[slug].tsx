@@ -1,12 +1,10 @@
-import {
-  Button,
-  Card,
-  Grid,
-  Link,
-  List,
-  ListItem,
-  Typography,
-} from '@mui/material'
+import Link from '@mui/material/Link'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import Card from '@mui/material/Card'
+import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout/Layout'
@@ -40,7 +38,7 @@ const ProductPage = () => {
         <Grid item md={3} xs={12}>
           <List>
             <ListItem>
-              <Typography component='h1' variant='h4'>
+              <Typography component='h1' variant='h1'>
                 {product.name}
               </Typography>
             </ListItem>

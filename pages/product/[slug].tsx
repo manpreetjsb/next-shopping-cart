@@ -6,15 +6,18 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+
 import Layout from '../../components/Layout/Layout'
-import data from '../../utils/data'
+import { GetServerSideProps, InferGetStaticPropsType } from 'next'
+import db from '../../utils/db'
+import Product from '../../models/Product'
+import { IProduct } from '../../utils/product.types'
 
-const ProductPage = () => {
-  const router = useRouter()
-  const { slug } = router.query
+const ProductPage: React.FC<
+  InferGetStaticPropsType<typeof getServerSideProps>
+> = (props: IProduct) => {
+  const { product } = props
 
-  const product = data.products.find((item) => item.slug === slug)
   if (!product) {
     return <div>Product not Found</div>
   }
@@ -91,3 +94,18 @@ const ProductPage = () => {
 }
 
 export default ProductPage
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { params } = context
+  const { slug }: string = params
+  console.log(typeof slug)
+  await db.connect()
+  const product: any = await Product.findOne({ slug }).lean()
+
+  await db.disconnect()
+  return {
+    props: {
+      product: db.convertDocToObject(product),
+    },
+  }
+}

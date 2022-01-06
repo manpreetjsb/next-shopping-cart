@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { IProduct } from '../utils/product.types'
 
 const connection = {}
 const uri = process.env.MONGODB_URI || ''
@@ -34,5 +35,12 @@ async function disconnect() {
   }
 }
 
-const db = { connect, disconnect }
+const convertDocToObject = (doc: any) => {
+  doc._id = doc._id.toString()
+  doc.createdAt = doc.createdAt.toString()
+  doc.updatedAt = doc.updatedAt.toString()
+  return doc
+}
+
+const db = { connect, disconnect, convertDocToObject }
 export default db

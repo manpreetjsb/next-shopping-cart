@@ -1,4 +1,5 @@
-export interface Product {
+export interface IProduct {
+  _id: string
   name: string
   slug: string
   category: string
@@ -9,8 +10,10 @@ export interface Product {
   numReviews: number
   countInStock: number
   description: string
+  createdAt?: string
+  updatedAt?: string
 }
 
-export interface data {
-  Products: Product[]
+export interface IproductData {
+  products: IProduct[]
 }

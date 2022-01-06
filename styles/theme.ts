@@ -1,4 +1,6 @@
 import { createTheme } from '@mui/material/styles'
+import { useContext } from 'react'
+import { Store } from '../utils/store'
 import { Colors } from './colors'
 import {
   FontFamily,

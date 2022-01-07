@@ -3,6 +3,9 @@ import type { ReactNode } from 'react'
 
 const init = {
   darkMode: false,
+  cart: {
+    cartItems: [],
+  },
 }
 
 export type Action = 'DARK_MODE_ON' | 'DARK_MODE_OFF'
@@ -14,11 +17,24 @@ export const Store = createContext<
 >(undefined)
 
 const reducer = (state: State, action: Action) => {
-  switch (action) {
+  switch (action.type) {
     case 'DARK_MODE_ON':
       return { ...state, darkMode: true }
     case 'DARK_MODE_OFF':
       return { ...state, darkMode: false }
+    case 'CART_ADD_ITEM': {
+      const newItem = action.payload
+      const existItem = state.cart.cartItems.find(
+        (item) => item._id === newItem._id
+      )
+      const cartItems = existItem
+        ? state.cart.cartItems.map((item) =>
+            item.name === existItem.name ? newItem : item
+          )
+        : [...state.cart.cartItems, newItem]
+      return { ...state, cart: { ...state.cart, cartItems } }
+    }
+
     default:
       return state
   }
@@ -26,6 +42,6 @@ const reducer = (state: State, action: Action) => {
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, init)
-  const value = { state, dispatch }
-  return <Store.Provider value={value}>{children}</Store.Provider>
+  //const value = { state, dispatch }
+  return <Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>
 }

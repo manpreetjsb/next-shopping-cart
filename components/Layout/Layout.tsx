@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Head from 'next/head'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -6,15 +6,20 @@ import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import NextLink from 'next/link'
+import Badge from '@mui/material/Badge'
 import { AppBarStyle, ContainerStyle, FooterStyle, Logo } from './Layout.styles'
+import { Store } from '../../utils/store'
 
 interface props {
   title: string
-  description: string
-  children: JSX.Element | JSX.Element[]
+  description?: string
+  children?: JSX.Element | JSX.Element[]
 }
 
 const Layout: React.FC<props> = ({ title, description, children }) => {
+  const { state, dispatch } = useContext(Store)
+  const { cart } = state
+  console.log(state)
   return (
     <>
       <Head>
@@ -31,8 +36,19 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
             </Grid>
             <Grid item display='flex'>
               <Box pr={2}>
-                <NextLink href='/cart' passHref>
-                  <Link>Cart</Link>
+                <NextLink href='/cartscreen' passHref>
+                  <Link>
+                    {cart.cartItems.length > 0 ? (
+                      <Badge
+                        color='secondary'
+                        badgeContent={cart.cartItems.length}
+                      >
+                        Cart
+                      </Badge>
+                    ) : (
+                      'Cart'
+                    )}
+                  </Link>
                 </NextLink>
               </Box>
               <Box>

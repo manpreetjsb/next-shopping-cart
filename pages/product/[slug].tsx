@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import Link from '@mui/material/Link'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -12,16 +13,33 @@ import { GetServerSideProps, InferGetStaticPropsType } from 'next'
 import db from '../../utils/db'
 import Product from '../../models/Product'
 import { IProduct } from '../../utils/product.types'
+import axios from 'axios'
+import { Store } from '../../utils/store'
+import { useRouter } from 'next/router'
 
 const ProductPage: React.FC<
   InferGetStaticPropsType<typeof getServerSideProps>
 > = (props: IProduct) => {
+  const router = useRouter()
+  const { dispatch } = useContext(Store)
   const { product } = props
 
   if (!product) {
     return <div>Product not Found</div>
   }
 
+  const addToCartHandler = async () => {
+    const { data } = await axios.get(`/api/products/${product._id}`)
+    if (data.countInStock <= 0) {
+      window.alert('Sorry. Product is out of stock')
+      return
+    }
+    dispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity: 1 },
+    })
+    router.push('/cartScreen')
+  }
   return (
     <Layout title={product.name} description={product.description}>
       <Grid mt={2} mb={2}>
@@ -81,7 +99,12 @@ const ProductPage: React.FC<
                 </Grid>
               </ListItem>
               <ListItem>
-                <Button fullWidth variant='contained' color='primary'>
+                <Button
+                  fullWidth
+                  variant='contained'
+                  color='primary'
+                  onClick={addToCartHandler}
+                >
                   Add to cart
                 </Button>
               </ListItem>

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import Link from '@mui/material/Link'
+import Link from 'next/link'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import Card from '@mui/material/Card'
@@ -7,7 +7,6 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
-
 import Layout from '../../components/Layout/Layout'
 import { GetServerSideProps, InferGetStaticPropsType } from 'next'
 import db from '../../utils/db'
@@ -25,7 +24,7 @@ const ProductPage: React.FC<
   const { product } = props
 
   if (!product) {
-    return <div>Product not Found</div>
+    return <Grid>Product not Found</Grid>
   }
 
   const addToCartHandler = async () => {
@@ -43,9 +42,10 @@ const ProductPage: React.FC<
   return (
     <Layout title={product.name} description={product.description}>
       <Grid mt={2} mb={2}>
-        <Link href='/'>Back to Products</Link>
+        <Link href='/'>
+          <a>Back to Products</a>
+        </Link>
       </Grid>
-
       <Grid container spacing={2}>
         <Grid item md={6} xs={12}>
           <Image

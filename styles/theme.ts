@@ -1,6 +1,4 @@
 import { createTheme } from '@mui/material/styles'
-import { useContext } from 'react'
-import { Store } from '../utils/store'
 import { Colors } from './colors'
 import {
   FontFamily,
@@ -20,13 +18,11 @@ import {
 export const theme = createTheme({
   palette: {
     primary: {
-      light: Colors.primaryLight,
       main: Colors.primary,
       dark: Colors.primaryDark,
       contrastText: Colors.white,
     },
     secondary: {
-      light: Colors.secondaryLight,
       main: Colors.secondary,
       dark: Colors.secondaryDark,
       contrastText: Colors.white,

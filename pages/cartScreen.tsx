@@ -17,8 +17,10 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const CartScreen: React.FC = () => {
+  const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { cartItems } = state.cart
 
@@ -48,6 +50,10 @@ const CartScreen: React.FC = () => {
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     })
+  }
+
+  const checkoutHandler = () => {
+    router.push('/shipping')
   }
 
   return (
@@ -152,7 +158,12 @@ const CartScreen: React.FC = () => {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  <Button fullWidth color='secondary' variant='contained'>
+                  <Button
+                    fullWidth
+                    color='secondary'
+                    variant='contained'
+                    onClick={checkoutHandler}
+                  >
                     Check out
                   </Button>
                 </ListItem>

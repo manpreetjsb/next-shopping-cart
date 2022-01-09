@@ -60,7 +60,7 @@ const Home: React.FC<InferGetStaticPropsType<typeof getServerSideProps>> = (
                   <Button
                     size='small'
                     variant='contained'
-                    color='secondary'
+                    color='primary'
                     onClick={() => addToCartHandler(product)}
                   >
                     Add to cart
@@ -80,8 +80,8 @@ export default Home
 export const getServerSideProps: GetServerSideProps = async () => {
   await db.connect()
   const products: any = await Product.find({}).lean()
-  //console.log(products)
   await db.disconnect()
+
   return {
     props: {
       products: products.map(db.convertDocToObject),

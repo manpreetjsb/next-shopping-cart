@@ -7,14 +7,14 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
-import axios from 'axios'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 
-const Login = () => {
+const Register = () => {
   const router = useRouter()
-  const { redirect } = router.query //login?redirect to shopping
+  const { redirect } = router.query
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
   useEffect(() => {
@@ -22,29 +22,34 @@ const Login = () => {
       router.push('/')
     }
   }, [])
-
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const submitHandler = async (e) => {
     e.preventDefault()
+    if (password !== confirmPassword) {
+      alert('Password dont match')
+      return
+    }
     try {
-      const { data } = await axios.post('/api/users/login', {
+      const { data } = await axios.post('/api/users/register', {
+        name,
         email,
         password,
       })
       dispatch({ type: 'USER_LOGIN', payload: data })
       router.push(redirect || '/')
-    } catch (err) {
+    } catch (err: any) {
       alert(err.response.data ? err.response.data.message : err.message)
     }
   }
-
   return (
-    <Layout title='Login'>
+    <Layout title='Register'>
       <Box sx={{ width: '75%', mx: 'auto' }}>
         <Grid mt={2} mb={2}>
           <Typography component='h1' variant='h1'>
-            Login
+            Register
           </Typography>
         </Grid>
 
@@ -53,12 +58,22 @@ const Login = () => {
             <ListItem>
               <TextField
                 fullWidth
-                label='Email'
-                id='email'
+                label='Name'
+                id='Name'
                 variant='outlined'
+                inputProps={{ type: 'Name' }}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                variant='outlined'
+                fullWidth
+                id='email'
+                label='Email'
                 inputProps={{ type: 'email' }}
                 onChange={(e) => setEmail(e.target.value)}
-              />
+              ></TextField>
             </ListItem>
             <ListItem>
               <TextField
@@ -71,19 +86,29 @@ const Login = () => {
               />
             </ListItem>
             <ListItem>
+              <TextField
+                fullWidth
+                label='confirm Password'
+                id='confirmPassword'
+                variant='outlined'
+                inputProps={{ type: 'password' }}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </ListItem>
+            <ListItem>
               <Button
                 color='primary'
                 fullWidth
                 type='submit'
                 variant='contained'
               >
-                LOGIN
+                REGISTER
               </Button>
             </ListItem>
             <ListItem>
-              Don't have an account? &nbsp;
-              <Link href={`/register?redirect=${redirect || '/'}`}>
-                <a>Register</a>
+              Already have an account? &nbsp;
+              <Link href={`/login?redirect=${redirect || '/'}`}>
+                <a>Login</a>
               </Link>
             </ListItem>
           </List>
@@ -92,5 +117,4 @@ const Login = () => {
     </Layout>
   )
 }
-
-export default Login
+export default Register

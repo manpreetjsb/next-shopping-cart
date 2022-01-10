@@ -8,9 +8,21 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
 import axios from 'axios'
-import { useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
+import { Store } from '../utils/store'
+import { useRouter } from 'next/router'
 
 const Login = () => {
+  const router = useRouter()
+  const { redirect } = router.query //login?redirect to shopping
+  const { state, dispatch } = useContext(Store)
+  const { userInfo } = state
+  useEffect(() => {
+    if (userInfo) {
+      router.push('/')
+    }
+  }, [])
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const submitHandler = async (e) => {
@@ -20,7 +32,8 @@ const Login = () => {
         email,
         password,
       })
-      alert('succss login')
+      dispatch({ type: 'USER_LOGIN', payload: data })
+      router.push(redirect || '/')
     } catch (err) {
       alert(err.response.data ? err.response.data.message : err.message)
     }

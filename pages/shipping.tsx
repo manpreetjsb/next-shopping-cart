@@ -1,7 +1,14 @@
-import Router from 'next/router'
+import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { Store } from '../utils/store'
 
 const Shipping = () => {
-  Router.push('/login')
+  const router = useRouter()
+  const { state, dispatch } = useContext(Store)
+  const { userInfo } = state
+  if (!userInfo) {
+    router.push('/login?redirect=/shipping')
+  }
   return <div>Shipping</div>
 }
 export default Shipping

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Head from 'next/head'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -8,6 +8,10 @@ import Typography from '@mui/material/Typography'
 import Badge from '@mui/material/Badge'
 import { AppBarStyle, ContainerStyle, FooterStyle, Logo } from './Layout.styles'
 import { Store } from '../../utils/store'
+import Button from '@mui/material/Button'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Router from 'next/router'
 
 interface props {
   title: string
@@ -17,8 +21,24 @@ interface props {
 
 const Layout: React.FC<props> = ({ title, description, children }) => {
   const { state, dispatch } = useContext(Store)
-  const { cart } = state
+  const { cart, userInfo } = state
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
+  const loginClickHandler = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const loginMenuCloseHandler = () => {
+    setAnchorEl(null)
+  }
+
+  const logoutClickHandler = () => {
+    dispatch({ type: 'USER_LOGOUT' })
+    setAnchorEl(null)
+    Router.push('/')
+  }
   return (
     <>
       <Head>
@@ -27,7 +47,12 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
       </Head>
       <AppBarStyle position='static'>
         <Toolbar>
-          <Grid container direction='row' justifyContent='space-between'>
+          <Grid
+            container
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+          >
             <Grid item>
               <Link href='/'>
                 <a>
@@ -35,7 +60,7 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                 </a>
               </Link>
             </Grid>
-            <Grid item display='flex'>
+            <Grid item display='flex' alignItems='center'>
               <Box pr={2}>
                 <Link href='/cartScreen'>
                   <a>
@@ -53,9 +78,45 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                 </Link>
               </Box>
               <Box>
-                <Link href='/login'>
-                  <a>Login</a>
-                </Link>
+                {userInfo ? (
+                  <>
+                    <Button
+                      aria-controls={open ? 'demo-positioned-menu' : undefined}
+                      aria-haspopup='true'
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={loginClickHandler}
+                      color='secondary'
+                    >
+                      {userInfo.name}
+                    </Button>
+                    <Menu
+                      id='demo-positioned-menu'
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={loginMenuCloseHandler}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                    >
+                      <MenuItem onClick={loginMenuCloseHandler}>
+                        Profile
+                      </MenuItem>
+                      <MenuItem onClick={loginMenuCloseHandler}>
+                        My account
+                      </MenuItem>
+                      <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <Link href='/login'>
+                    <a>Login</a>
+                  </Link>
+                )}
               </Box>
             </Grid>
           </Grid>

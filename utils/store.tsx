@@ -10,6 +10,7 @@ const init = {
       : ([] as IProduct[]), */
     cartItems: [] as IProduct[],
   },
+  userInfo: null,
 }
 
 export enum ActionType {
@@ -17,6 +18,8 @@ export enum ActionType {
   DARK_MODE_OFF = 'DARK_MODE_OFF',
   CART_ADD_ITEM = 'CART_ADD_ITEM',
   REMEOVE_ITEM = 'REMEOVE_ITEM',
+  USER_LOGIN = 'USER_LOGIN',
+  USER_LOGOUT = 'USER_LOGOUT',
 }
 
 export type Dispatch = (action: ActionType) => void
@@ -60,6 +63,10 @@ const reducer = (state: State, action: IAction) => {
       )
       return { ...state, cart: { ...state.cart, cartItems } }
     }
+    case ActionType.USER_LOGIN:
+      return { ...state, userInfo: action.payload }
+    case ActionType.USER_LOGOUT:
+      return { ...state, userInfo: null, cart: { cartItems: [] } }
     default:
       return state
   }

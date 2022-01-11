@@ -32,15 +32,12 @@ const Login = () => {
   }, [])
 
   const submitHandler = async ({ email, password }) => {
-    console.log('email', password)
     closeSnackbar()
     try {
       const { data } = await axios.post('/api/users/login', {
         email,
         password,
       })
-      console.log('hi')
-      console.log(data)
       dispatch({ type: 'USER_LOGIN', payload: JSON.stringify(data) })
       router.push(redirect || '/')
     } catch (err) {

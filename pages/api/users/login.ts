@@ -8,7 +8,6 @@ const handler = nc()
 
 handler.post(async (req, res) => {
   await db.connect()
-  console.log(req.body.email)
   const user = await User.findOne({ email: req.body.email })
   await db.disconnect()
   if (user && bcrypt.compareSync(req.body.password, user.password)) {

@@ -9,6 +9,7 @@ const init = {
       ? JSON.parse(localStorage.getItem('cartItems'))
       : ([] as IProduct[]), */
     cartItems: [] as IProduct[],
+    shippingAddress: {},
   },
   userInfo: null,
 }
@@ -20,6 +21,7 @@ export enum ActionType {
   REMEOVE_ITEM = 'REMEOVE_ITEM',
   USER_LOGIN = 'USER_LOGIN',
   USER_LOGOUT = 'USER_LOGOUT',
+  SAVE_SHIPPING_ADDRESS = 'SAVE_SHIPPING_ADDRESS',
 }
 
 export type Dispatch = (action: ActionType) => void
@@ -67,6 +69,11 @@ const reducer = (state: State, action: IAction) => {
       return { ...state, userInfo: action.payload }
     case ActionType.USER_LOGOUT:
       return { ...state, userInfo: null, cart: { cartItems: [] } }
+    case ActionType.SAVE_SHIPPING_ADDRESS:
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload },
+      }
     default:
       return state
   }

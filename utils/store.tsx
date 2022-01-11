@@ -59,7 +59,7 @@ const reducer = (state: State, action: IAction) => {
     }
     case ActionType.REMEOVE_ITEM: {
       const cartItems = state.cart.cartItems.filter(
-        (item) => item._id !== action.payload.item._id
+        (item) => item._id !== action.payload._id
       )
       return { ...state, cart: { ...state.cart, cartItems } }
     }

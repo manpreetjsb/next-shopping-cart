@@ -24,10 +24,10 @@ const CartScreen: React.FC = () => {
   const { state, dispatch } = useContext(Store)
   const { cartItems } = state.cart
 
-  const removeItem = (item) => {
+  const removeItem = (_id: string) => {
     dispatch({
       type: 'REMEOVE_ITEM',
-      payload: { item },
+      payload: _id,
     })
   }
 
@@ -134,7 +134,7 @@ const CartScreen: React.FC = () => {
                               variant='outlined'
                               size='small'
                               color='primary'
-                              onClick={() => removeItem(item)}
+                              onClick={() => removeItem(item._id)}
                             >
                               X
                             </Button>

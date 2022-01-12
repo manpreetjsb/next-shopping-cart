@@ -35,22 +35,23 @@ const Shipping: React.FC = () => {
     cart: { shippingAddress },
   } = state
   useEffect(() => {
-    if (userInfo) {
+    console.log('userInfo', userInfo)
+    /* if (userInfo) {
       router.push('/login?redirect=/shipping')
-    }
-    setValue('fullname', shippingAddress.fullname)
+    } */
+    setValue('fullname', shippingAddress.fullName)
     setValue('address', shippingAddress.address)
     setValue('city', shippingAddress.city)
     setValue('postalCode', shippingAddress.postalCode)
     setValue('country', shippingAddress.country)
   }, [])
 
-  const submitHandler = ({ fullname, address, city, postalCode, country }) => {
+  const submitHandler = ({ fullName, address, city, postalCode, country }) => {
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
-      payload: { fullname, address, city, postalCode, country },
+      payload: { fullName, address, city, postalCode, country },
     })
-    //localStorage.setItem({ fullname, address, city, postalCode, country })
+    //localStorage.setItem({ fullName, address, city, postalCode, country })
     router.push('/payments')
   }
   return (

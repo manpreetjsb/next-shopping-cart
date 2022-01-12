@@ -10,7 +10,7 @@ const init = {
       : ([] as IProduct[]), */
     cartItems: [] as IProduct[],
     shippingAddress: {},
-    paymentMethod: {},
+    paymentMethod: '',
   },
   userInfo: null,
 }

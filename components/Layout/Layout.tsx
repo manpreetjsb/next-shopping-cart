@@ -85,7 +85,8 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                       aria-haspopup='true'
                       aria-expanded={open ? 'true' : undefined}
                       onClick={loginClickHandler}
-                      color='secondary'
+                      color='primary'
+                      size='small'
                     >
                       {userInfo.name}
                     </Button>

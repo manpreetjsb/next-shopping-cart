@@ -1,13 +1,11 @@
 import React, { createContext, useReducer } from 'react'
 import type { ReactNode } from 'react'
 import { IProduct } from './product.types'
+import Cookies from 'js-cookie'
 
 const init = {
-  darkMode: false,
+  darkMode: Cookies.get('darkMode' === 'ON' ? true : false),
   cart: {
-    /* cartItems: localStorage.getItem('cartItems')
-      ? JSON.parse(localStorage.getItem('cartItems'))
-      : ([] as IProduct[]), */
     cartItems: [] as IProduct[],
     shippingAddress: {},
     paymentMethod: '',
@@ -63,7 +61,7 @@ const reducer = (state: State, action: IAction) => {
     }
     case ActionType.REMEOVE_ITEM: {
       const cartItems = state.cart.cartItems.filter(
-        (item) => item._id !== action.payload._id
+        (item) => item._id !== action.payload
       )
       return { ...state, cart: { ...state.cart, cartItems } }
     }

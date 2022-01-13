@@ -12,6 +12,9 @@ import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Router from 'next/router'
+import { Switch } from '@mui/material'
+import { ActionType } from '../../utils/store'
+import Cookies from 'js-cookie'
 
 interface props {
   title: string
@@ -21,7 +24,7 @@ interface props {
 
 const Layout: React.FC<props> = ({ title, description, children }) => {
   const { state, dispatch } = useContext(Store)
-  const { cart, userInfo } = state
+  const { cart, userInfo, darkMode } = state
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -38,6 +41,15 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
     dispatch({ type: 'USER_LOGOUT' })
     setAnchorEl(null)
     Router.push('/')
+  }
+  const changeThemeHandler = () => {
+    dispatch({
+      mode: darkMode ? ActionType.DARK_MODE_OFF : ActionType.DARK_MODE_OFF,
+    })
+    const newDarkMode = !darkMode
+    console.log('darkMode', darkMode)
+    console.log(newDarkMode)
+    Cookies.set('darMode', newDarkMode ? 'ON' : 'OFF')
   }
   return (
     <>
@@ -61,6 +73,7 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
               </Link>
             </Grid>
             <Grid item display='flex' alignItems='center'>
+              <Switch checked={darkMode} onChange={changeThemeHandler}></Switch>
               <Box pr={2}>
                 <Link href='/cartScreen'>
                   <a>

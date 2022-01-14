@@ -44,13 +44,13 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
   }
   const changeThemeHandler = () => {
     dispatch({
-      mode: darkMode ? ActionType.DARK_MODE_OFF : ActionType.DARK_MODE_OFF,
+      mode: darkMode ? ActionType.DARK_MODE_OFF : ActionType.DARK_MODE_ON,
     })
     const newDarkMode = !darkMode
-    console.log('darkMode', darkMode)
-    console.log(newDarkMode)
+
     Cookies.set('darMode', newDarkMode ? 'ON' : 'OFF')
   }
+
   return (
     <>
       <Head>

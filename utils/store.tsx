@@ -3,10 +3,15 @@ import type { ReactNode } from 'react'
 import { IProduct } from './product.types'
 import Cookies from 'js-cookie'
 
+console.log('store', Cookies.get('darkMode'))
 const init = {
-  darkMode: Cookies.get('darkMode' === 'ON' ? true : false),
+  //darkMode: Cookies.get('darkMode' === 'ON' ? true : false),
+  darkMode: false,
   cart: {
-    cartItems: [] as IProduct[],
+    cartItems: Cookies.get('cartItems')
+      ? JSON.parse(Cookies.get('cartItems'))
+      : [],
+    //cartItems: [] as IProduct[],
     shippingAddress: {},
     paymentMethod: '',
   },
@@ -56,7 +61,7 @@ const reducer = (state: State, action: IAction) => {
           )
         : [...state.cart.cartItems, newItem]
 
-      //localStorage.setItem('cartItems', JSON.stringify(cartItems))
+      Cookies.set('cartItems', JSON.stringify(cartItems))
       return { ...state, cart: { ...state.cart, cartItems } }
     }
     case ActionType.REMEOVE_ITEM: {

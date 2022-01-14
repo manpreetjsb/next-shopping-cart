@@ -14,6 +14,7 @@ import { Store } from '../utils/store'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Button from '@mui/material/Button'
 import { useSnackbar } from 'notistack'
+import Cookies from 'js-cookie'
 
 const Payments = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
@@ -28,6 +29,7 @@ const Payments = () => {
       router.push('/shipping')
     } else {
       setPaymentMethod(localStorage.getItem('paymentMethod') || '')
+      //setPaymentMethod(Cookies.get('paymentMethod') || ''))
     }
   }, [])
 

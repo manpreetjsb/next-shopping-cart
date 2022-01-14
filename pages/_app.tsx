@@ -4,12 +4,18 @@ import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../styles/theme'
 import { StoreProvider } from '../utils/store'
 import { SnackbarProvider } from 'notistack'
+import { createTheme } from '@mui/material/styles'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  const updatedTheme = createTheme({
+    ...theme,
+    palette: { ...theme.palette, mode: 'dark' },
+  })
+
   return (
     <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
       <StoreProvider>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={updatedTheme}>
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>

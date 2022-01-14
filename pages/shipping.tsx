@@ -10,8 +10,8 @@ import { useContext, useEffect } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
-import { useSnackbar } from 'notistack'
 import CheckoutProcessBar from '../components/CheckoutProcessBar'
+import Cookies from 'js-cookie'
 
 export interface Iregistration {
   name: string
@@ -52,6 +52,7 @@ const Shipping: React.FC = () => {
       payload: { fullName, address, city, postalCode, country },
     })
     //localStorage.setItem({ fullName, address, city, postalCode, country })
+    //Cookies.set('')
     router.push('/payments')
   }
   return (

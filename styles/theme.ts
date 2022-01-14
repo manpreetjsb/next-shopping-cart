@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material/styles'
-
 import { Colors } from './colors'
 import {
   FontFamily,
@@ -18,7 +17,6 @@ import {
 
 export const theme = createTheme({
   palette: {
-    mode: 'dark',
     primary: {
       main: Colors.primary,
       dark: Colors.primaryDark,
@@ -28,9 +26,6 @@ export const theme = createTheme({
       main: Colors.secondary,
       dark: Colors.secondaryDark,
       contrastText: Colors.white,
-    },
-    background: {
-      default: Colors.white,
     },
   },
   typography: {

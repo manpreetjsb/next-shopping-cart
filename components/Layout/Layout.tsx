@@ -27,8 +27,6 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
   const { state, dispatch } = useContext(Store)
   const { cart, userInfo, darkMode } = state
 
-  console.log('cart', cart)
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 

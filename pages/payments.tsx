@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Box from '@mui/material/Box'
-import { Store } from '../utils/store'
+import { Store, ActionType } from '../utils/store'
 import { useSnackbar } from 'notistack'
 import Cookies from 'js-cookie'
 import Layout from '../components/Layout/Layout'
@@ -39,7 +39,7 @@ const Payments = () => {
     if (!paymentMethod) {
       enqueueSnackbar('Payment method is required', { variant: 'error' })
     } else {
-      dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethod })
+      dispatch({ type: ActionType.SAVE_PAYMENT_METHOD, payload: paymentMethod })
       Cookies.set('paymentMethod', paymentMethod)
       router.push('/placeorder')
     }

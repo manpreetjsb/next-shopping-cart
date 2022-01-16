@@ -31,6 +31,7 @@ export enum ActionType {
   USER_LOGOUT = 'USER_LOGOUT',
   SAVE_SHIPPING_ADDRESS = 'SAVE_SHIPPING_ADDRESS',
   SAVE_PAYMENT_METHOD = 'SAVE_PAYMENT_METHOD',
+  CART_CLEAR = 'CART_CLEAR',
 }
 
 export type Dispatch = (action: ActionType) => void

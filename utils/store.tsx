@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { IProduct } from './product.types'
 import Cookies from 'js-cookie'
 
-console.log('store', Cookies.get('darkMode'))
+console.log('store-cartItems', Cookies.get('cartItems'))
 const init = {
   //darkMode: Cookies.get('darkMode' === 'ON' ? true : false),
   darkMode: false,
@@ -12,10 +12,14 @@ const init = {
       ? JSON.parse(Cookies.get('cartItems'))
       : [],
     //cartItems: [] as IProduct[],
-    shippingAddress: {},
+    shippingAddress: Cookies.get('shippingAddress')
+      ? JSON.parse(Cookies.get('shippingAddress'))
+      : {},
     paymentMethod: '',
   },
-  userInfo: null,
+  userInfo: Cookies.get('userInfo')
+    ? JSON.parse(Cookies.get('userInfo'))
+    : null,
 }
 
 export enum ActionType {
@@ -68,6 +72,7 @@ const reducer = (state: State, action: IAction) => {
       const cartItems = state.cart.cartItems.filter(
         (item) => item._id !== action.payload
       )
+      Cookies.set('cartItems', JSON.stringify(cartItems))
       return { ...state, cart: { ...state.cart, cartItems } }
     }
     case ActionType.USER_LOGIN:

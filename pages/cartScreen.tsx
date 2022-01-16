@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import dynamic from 'next/dynamic'
 import Typography from '@mui/material/Typography'
 import Layout from '../components/Layout/Layout'
 import { Store } from '../utils/store'
@@ -18,11 +19,14 @@ import ListItem from '@mui/material/ListItem'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { IProduct } from '../utils/product.types'
 
 const CartScreen: React.FC = () => {
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { cartItems } = state.cart
+
+  console.log('ccccccccccccccccc', cartItems)
 
   const removeItem = (_id: string) => {
     dispatch({
@@ -31,7 +35,7 @@ const CartScreen: React.FC = () => {
     })
   }
 
-  const updateCart = async (item, quantity, condition) => {
+  const updateCart = async (item: any, quantity: number, condition: string) => {
     if (condition === 'dec') {
       quantity = quantity - 1
       if (quantity === 0) {
@@ -85,7 +89,7 @@ const CartScreen: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems.map((item) => {
+                  {cartItems.map((item: IProduct) => {
                     return (
                       <TableRow key={item._id}>
                         <TableCell>
@@ -175,4 +179,4 @@ const CartScreen: React.FC = () => {
     </Layout>
   )
 }
-export default CartScreen
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false })

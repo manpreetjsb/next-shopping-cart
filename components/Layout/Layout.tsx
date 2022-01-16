@@ -11,10 +11,10 @@ import { Store } from '../../utils/store'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import Router from 'next/router'
 import { Switch } from '@mui/material'
 import { ActionType } from '../../utils/store'
 import Cookies from 'js-cookie'
+import { useRouter } from 'next/router'
 
 interface props {
   title: string
@@ -23,8 +23,11 @@ interface props {
 }
 
 const Layout: React.FC<props> = ({ title, description, children }) => {
+  const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { cart, userInfo, darkMode } = state
+
+  console.log('cart', cart)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -40,7 +43,9 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
   const logoutClickHandler = () => {
     dispatch({ type: 'USER_LOGOUT' })
     setAnchorEl(null)
-    Router.push('/')
+    Cookies.remove('userInfo')
+    Cookies.remove('cartItems')
+    router.push('/')
   }
   const changeThemeHandler = () => {
     dispatch({
@@ -82,10 +87,10 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                         color='secondary'
                         badgeContent={cart.cartItems.length}
                       >
-                        Cart
+                        <Typography>Cart</Typography>
                       </Badge>
                     ) : (
-                      'Cart'
+                      <Typography variant='body2'>Cart</Typography>
                     )}
                   </a>
                 </Link>
@@ -100,8 +105,9 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                       onClick={loginClickHandler}
                       color='primary'
                       size='small'
+                      variant='container'
                     >
-                      {userInfo.name}
+                      <Typography>{userInfo.name}</Typography>
                     </Button>
                     <Menu
                       id='demo-positioned-menu'
@@ -128,7 +134,9 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                   </>
                 ) : (
                   <Link href='/login'>
-                    <a>Login</a>
+                    <a>
+                      <Typography>Login</Typography>
+                    </a>
                   </Link>
                 )}
               </Box>

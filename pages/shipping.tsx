@@ -36,10 +36,10 @@ const Shipping: React.FC = () => {
   } = state
   useEffect(() => {
     console.log('userInfo', userInfo)
-    /* if (userInfo) {
+    if (!userInfo) {
       router.push('/login?redirect=/shipping')
-    } */
-    setValue('fullname', shippingAddress.fullName)
+    }
+    setValue('fullName', shippingAddress.fullName)
     setValue('address', shippingAddress.address)
     setValue('city', shippingAddress.city)
     setValue('postalCode', shippingAddress.postalCode)
@@ -52,7 +52,10 @@ const Shipping: React.FC = () => {
       payload: { fullName, address, city, postalCode, country },
     })
     //localStorage.setItem({ fullName, address, city, postalCode, country })
-    //Cookies.set('')
+    Cookies.set(
+      'shippingAddress',
+      JSON.stringify({ fullName, address, city, postalCode, country })
+    )
     router.push('/payments')
   }
   return (

@@ -13,6 +13,7 @@ import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
+import Cookies from 'js-cookie'
 
 const Login = () => {
   const {
@@ -38,7 +39,9 @@ const Login = () => {
         email,
         password,
       })
-      dispatch({ type: 'USER_LOGIN', payload: JSON.stringify(data) })
+      dispatch({ type: 'USER_LOGIN', payload: data })
+      console.log(data)
+      Cookies.set('userInfo', JSON.stringify(data))
       router.push(redirect || '/')
     } catch (err) {
       enqueueSnackbar(err.response ? err.response.data.message : err.message, {

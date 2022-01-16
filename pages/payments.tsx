@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import RadioGroup from '@mui/material/RadioGroup'
-import Radio from '@mui/material/Radio'
-import FormControl from '@mui/material/FormControl'
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import Typography from '@mui/material/Typography'
-import CheckoutProcessBar from '../components/CheckoutProcessBar'
-import Layout from '../components/Layout/Layout'
 import { Store } from '../utils/store'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Button from '@mui/material/Button'
 import { useSnackbar } from 'notistack'
 import Cookies from 'js-cookie'
+import Layout from '../components/Layout/Layout'
+import Grid from '@mui/material/Grid'
+import CheckoutProcessBar from '../components/CheckoutProcessBar'
+import Typography from '@mui/material/Typography'
+import List from '@mui/material/List'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControl from '@mui/material/FormControl'
+import ListItem from '@mui/material/ListItem'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Button from '@mui/material/Button'
+import Radio from '@mui/material/Radio'
 
 const Payments = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
@@ -28,8 +28,8 @@ const Payments = () => {
     if (!shippingAddress.address) {
       router.push('/shipping')
     } else {
-      setPaymentMethod(localStorage.getItem('paymentMethod') || '')
-      //setPaymentMethod(Cookies.get('paymentMethod') || ''))
+      //setPaymentMethod(localStorage.getItem('paymentMethod') || '')
+      setPaymentMethod(Cookies.get('paymentMethod') || '')
     }
   }, [])
 
@@ -40,6 +40,7 @@ const Payments = () => {
       enqueueSnackbar('Payment method is required', { variant: 'error' })
     } else {
       dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethod })
+      Cookies.set('paymentMethod', paymentMethod)
       router.push('/placeorder')
     }
   }

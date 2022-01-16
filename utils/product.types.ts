@@ -12,6 +12,7 @@ export interface IProduct {
   description: string
   createdAt?: string
   updatedAt?: string
+  quantity?: number | null | undefined
 }
 
 export interface IproductData {
@@ -26,4 +27,10 @@ export interface IUser {
   isAdmin: boolean
   createdAt?: string
   updatedAt?: string
+}
+
+export interface IcartItem {
+  cartItems: IProduct[]
+  paymentMethod: string
+  shippingAddress: {}
 }

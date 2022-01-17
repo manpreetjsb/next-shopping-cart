@@ -32,6 +32,9 @@ export enum ActionType {
   SAVE_SHIPPING_ADDRESS = 'SAVE_SHIPPING_ADDRESS',
   SAVE_PAYMENT_METHOD = 'SAVE_PAYMENT_METHOD',
   CART_CLEAR = 'CART_CLEAR',
+  FETCH_REQUEST = 'FETCH_REQUEST',
+  FETCH_SUCCESS = 'FETCH_SUCCESS',
+  FETCH_FAIL = 'FETCH_FAIL',
 }
 
 export type Dispatch = (action: ActionType) => void
@@ -79,7 +82,11 @@ const reducer = (state: State, action: IAction) => {
     case ActionType.USER_LOGIN:
       return { ...state, userInfo: action.payload }
     case ActionType.USER_LOGOUT:
-      return { ...state, userInfo: null, cart: { cartItems: [] } }
+      return {
+        ...state,
+        userInfo: null,
+        cart: { cartItems: [], shippingAddress: {}, paymentMethod: '' },
+      }
     case ActionType.SAVE_SHIPPING_ADDRESS:
       return {
         ...state,
@@ -90,6 +97,8 @@ const reducer = (state: State, action: IAction) => {
         ...state,
         cart: { ...state.cart, paymentMethod: action.payload },
       }
+    case ActionType.CART_CLEAR:
+      return { ...state, cart: { ...state.cart, cartItems: [] } }
     default:
       return state
   }

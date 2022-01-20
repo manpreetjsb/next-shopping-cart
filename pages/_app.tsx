@@ -5,6 +5,7 @@ import { theme } from '../styles/theme'
 import { StoreProvider } from '../utils/store'
 import { SnackbarProvider } from 'notistack'
 import { createTheme } from '@mui/material/styles'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const updatedTheme = createTheme({
@@ -16,8 +17,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
       <StoreProvider>
         <ThemeProvider theme={updatedTheme}>
-          <CssBaseline />
-          <Component {...pageProps} />
+          <PayPalScriptProvider deferLoading={true}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </PayPalScriptProvider>
         </ThemeProvider>
       </StoreProvider>
     </SnackbarProvider>

@@ -20,9 +20,9 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { getError } from '../../utils/error'
 import axios from 'axios'
-import { GetServerSideProps, InferGetStaticPropsType } from 'next'
+import { GetServerSideProps } from 'next'
 import CircularProgress from '@mui/material/CircularProgress'
-import CheckoutProcessBar from '../../components/CheckoutProcessBar'
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -32,6 +32,14 @@ const reducer = (state, action) => {
       return { ...state, loading: false, order: action.payload, error: '' }
     case ActionType.FETCH_FAIL:
       return { ...state, loading: false, error: action.payload }
+    case ActionType.PAY_REQUEST:
+      return { ...state, loadingPay: true }
+    case ActionType.PAY_SUCCESS:
+      return { ...state, loadingPay: false, successPay: true }
+    case ActionType.PAY_FAIL:
+      return { ...state, loadingPay: false, errorPay: action.payload }
+    case ActionType.PAY_RESET:
+      return { ...state, loadingPay: false, successPay: false, errorPay: '' }
     default:
       state
   }
@@ -40,14 +48,18 @@ const reducer = (state, action) => {
 const Order: React.FC = ({ params }) => {
   const router = useRouter()
   const orderId = params.id
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
   const { state } = useContext(Store)
   const { userInfo } = state
 
-  const [{ loading, error, order }, dispatch] = useReducer(reducer, {
-    loading: true,
-    order: {},
-    error: '',
-  })
+  const [{ loading, error, order, successPay }, dispatch] = useReducer(
+    reducer,
+    {
+      loading: true,
+      order: {},
+      error: '',
+    }
+  )
 
   const {
     shippingAddress,
@@ -79,18 +91,70 @@ const Order: React.FC = ({ params }) => {
       }
     }
 
-    if (!order._id || (order._id && order._id !== orderId)) {
+    if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder()
+      if (successPay) {
+        dispatch({ taype: 'PAY_RESET' })
+      }
+    } else {
+      const loadPayPalScript = async () => {
+        const { data: clientId } = await axios.get('/api/keys/paypal', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        })
+        paypalDispatch({
+          type: 'resetOptions',
+          value: {
+            'client-id': clientId,
+            currency: 'USD',
+          },
+        })
+        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' })
+      }
+      loadPayPalScript()
     }
-  }, [order])
+  }, [order, successPay])
 
   const { closeSnackbar, enqueueSnackbar } = useSnackbar()
 
+  const createOrder = (data, actions) => {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: totalPrice },
+          },
+        ],
+      })
+      .then((orderID) => {
+        return orderID
+      })
+  }
+
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(async (details) => {
+      try {
+        dispatch({ type: ActionType.PAY_REQUEST })
+        const { data } = await axios.put(
+          `/api/orders/${order._id}/pay`,
+          details,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        dispatch({ type: ActionType.PAY_SUCCESS, payload: data })
+        enqueueSnackbar('Order is paid', { variant: 'success' })
+      } catch (err) {
+        dispatch({ type: ActionType.PAY_FAIL, payload: getError(err) })
+        enqueueSnackbar(getError(err), { variant: 'error' })
+      }
+    })
+  }
+  const onError = () => {
+    enqueueSnackbar(getError(err), { variant: 'error' })
+  }
+
   return (
     <Layout title={`Order ${orderId}`}>
-      <Grid mt={3} mb={3}>
-        <CheckoutProcessBar activeStep={3} />
-      </Grid>
       <Grid mt={2} mb={2}>
         <Typography component='h1' variant='h1'>
           Order {orderId}
@@ -246,6 +310,21 @@ const Order: React.FC = ({ params }) => {
                     </Grid>
                   </Grid>
                 </ListItem>
+                {!isPaid && (
+                  <ListItem>
+                    <Box width={1}>
+                      {isPending ? (
+                        <CircularProgress />
+                      ) : (
+                        <PayPalButtons
+                          createOrder={createOrder}
+                          onApprove={onApprove}
+                          onError={onError}
+                        ></PayPalButtons>
+                      )}
+                    </Box>
+                  </ListItem>
+                )}
               </List>
             </Card>
           </Grid>

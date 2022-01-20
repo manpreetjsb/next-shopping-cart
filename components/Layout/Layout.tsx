@@ -34,8 +34,11 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const loginMenuCloseHandler = () => {
+  const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null)
+    if (redirect) {
+      router.push(redirect)
+    }
   }
 
   const logoutClickHandler = () => {
@@ -121,11 +124,19 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                         horizontal: 'left',
                       }}
                     >
-                      <MenuItem onClick={loginMenuCloseHandler}>
+                      <MenuItem
+                        onClick={(e) => {
+                          loginMenuCloseHandler(e, '/profile')
+                        }}
+                      >
                         Profile
                       </MenuItem>
-                      <MenuItem onClick={loginMenuCloseHandler}>
-                        My account
+                      <MenuItem
+                        onClick={(e) => {
+                          loginMenuCloseHandler(e, '/order-history')
+                        }}
+                      >
+                        Order History
                       </MenuItem>
                       <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                     </Menu>

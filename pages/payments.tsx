@@ -28,7 +28,6 @@ const Payments = () => {
     if (!shippingAddress.address) {
       router.push('/shipping')
     } else {
-      //setPaymentMethod(localStorage.getItem('paymentMethod') || '')
       setPaymentMethod(Cookies.get('paymentMethod') || '')
     }
   }, [])

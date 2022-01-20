@@ -9,7 +9,6 @@ const handler = nc<NextApiRequest, NextApiResponse>()
 handler.use(isAuth)
 
 handler.get(async (req, res) => {
-  console.log('dd')
   await db.connect()
   const order = await Order.findById(req.query.id)
   await db.disconnect()

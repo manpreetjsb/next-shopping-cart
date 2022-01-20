@@ -35,6 +35,10 @@ export enum ActionType {
   FETCH_REQUEST = 'FETCH_REQUEST',
   FETCH_SUCCESS = 'FETCH_SUCCESS',
   FETCH_FAIL = 'FETCH_FAIL',
+  PAY_REQUEST = 'PAY_REQUEST',
+  PAY_SUCCESS = 'PAY_SUCCESS',
+  PAY_FAIL = 'PAY_FAIL',
+  PAY_RESET = 'PAY_RESET',
 }
 
 export type Dispatch = (action: ActionType) => void

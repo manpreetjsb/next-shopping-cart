@@ -19,14 +19,12 @@ import ListItem from '@mui/material/ListItem'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { IProduct } from '../utils/product.types'
+import { IProduct } from '../utils/allTypes.types'
 
 const CartScreen: React.FC = () => {
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { cartItems } = state.cart
-
-  console.log('ccccccccccccccccc', cartItems)
 
   const removeItem = (_id: string) => {
     dispatch({

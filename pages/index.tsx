@@ -13,9 +13,10 @@ import Layout from '../components/Layout/Layout'
 import { GetServerSideProps, InferGetStaticPropsType } from 'next'
 import db from '../utils/db'
 import Product from '../models/Product'
-import { IProduct, IproductData } from '../utils/product.types'
+import { IProduct, IproductData } from '../utils/allTypes.types'
 import axios from 'axios'
 import { Store } from '../utils/store'
+import { CarouselScreen } from '../components/Carousel/Carousel'
 
 const Home: React.FC<InferGetStaticPropsType<typeof getServerSideProps>> = (
   props: IproductData
@@ -35,6 +36,9 @@ const Home: React.FC<InferGetStaticPropsType<typeof getServerSideProps>> = (
 
   return (
     <Layout title={'hello'} description={'undefined'}>
+      <Box mt={3} mb={3}>
+        <CarouselScreen />
+      </Box>
       <h1>Products</h1>
       <Grid container spacing={3}>
         {props.products.map((product: IProduct) => (

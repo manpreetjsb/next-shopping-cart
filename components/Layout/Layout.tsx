@@ -15,6 +15,10 @@ import { Switch } from '@mui/material'
 import { ActionType } from '../../utils/store'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
+import Paper from '@mui/material/Paper'
+import InputBase from '@mui/material/InputBase'
+import IconButton from '@mui/material/IconButton'
+import SearchIcon from '@mui/icons-material/Search'
 
 interface props {
   title: string
@@ -24,8 +28,10 @@ interface props {
 
 const Layout: React.FC<props> = ({ title, description, children }) => {
   const router = useRouter()
+  const { query } = router
   const { state, dispatch } = useContext(Store)
   const { cart, userInfo, darkMode } = state
+  const [searchQuery, setSearchQuery] = useState('')
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -34,7 +40,7 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const loginMenuCloseHandler = (e, redirect) => {
+  const loginMenuCloseHandler = (e: React.FormEvent, redirect) => {
     setAnchorEl(null)
     if (redirect) {
       router.push(redirect)
@@ -57,6 +63,15 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
     Cookies.set('darMode', newDarkMode ? 'ON' : 'OFF')
   }
 
+  const submitHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    router.push(`/search?s=${searchQuery}`)
+  }
+
+  const queryChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+  }
+
   return (
     <>
       <Head>
@@ -77,6 +92,28 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                   <Logo>Flying Money</Logo>
                 </a>
               </Link>
+            </Grid>
+            <Grid>
+              <Paper
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <form onSubmit={submitHandler}>
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder='Search'
+                    inputProps={{ 'aria-label': 'search' }}
+                    size='small'
+                    onChange={queryChangeHandler}
+                    value={searchQuery}
+                  />
+                  <IconButton type='submit' aria-label='search'>
+                    <SearchIcon />
+                  </IconButton>
+                </form>
+              </Paper>
             </Grid>
             <Grid item display='flex' alignItems='center'>
               <Switch checked={darkMode} onChange={changeThemeHandler}></Switch>
@@ -106,7 +143,7 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
                       onClick={loginClickHandler}
                       color='primary'
                       size='small'
-                      variant='container'
+                      variant='contained'
                     >
                       <Typography>{userInfo.name}</Typography>
                     </Button>

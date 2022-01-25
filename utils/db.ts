@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { IProduct } from '../utils/product.types'
+import { IProduct } from './allTypes.types'
 
 const connection = {}
 const uri = process.env.MONGODB_URI || ''

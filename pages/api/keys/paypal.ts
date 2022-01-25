@@ -1,5 +1,7 @@
 import nc from 'next-connect'
+import { NextApiRequest, NextApiResponse } from 'next'
 import { isAuth } from '../../../utils/auth'
+
 const handler = nc<NextApiRequest, NextApiResponse>()
 
 handler.use(isAuth)

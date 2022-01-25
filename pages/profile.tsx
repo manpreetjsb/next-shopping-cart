@@ -10,7 +10,6 @@ import ListItem from '@mui/material/ListItem'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { Store } from '../utils/store'
-
 import Layout from '../components/Layout/Layout'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -18,6 +17,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
 import Cookies from 'js-cookie'
+import { IregistrationForm } from '../utils/allTypes.types'
 
 const Profile = () => {
   const { state, dispatch } = useContext(Store)
@@ -28,7 +28,7 @@ const Profile = () => {
     setValue,
   } = useForm()
   const { userInfo } = state
-  const { router } = useRouter
+  const router = useRouter()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   useEffect(() => {
@@ -39,7 +39,12 @@ const Profile = () => {
     setValue('email', userInfo.email)
   }, [])
 
-  const submitHandler = async ({ name, email, password, confirmPassword }) => {
+  const submitHandler = async ({
+    name,
+    email,
+    password,
+    confirmPassword,
+  }: IregistrationForm) => {
     closeSnackbar()
     if (password !== confirmPassword) {
       enqueueSnackbar('Password dont match', {
@@ -48,11 +53,15 @@ const Profile = () => {
       return
     }
     try {
-      const { data } = await axios.put('/api/users/profile', {
-        name,
-        email,
-        password,
-      })
+      const { data } = await axios.put(
+        '/api/users/profile',
+        {
+          name,
+          email,
+          password,
+        },
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      )
       dispatch({ type: 'USER_LOGIN', payload: data })
       Cookies.set('userInfo', data)
       enqueueSnackbar('Profile updated successfully', {

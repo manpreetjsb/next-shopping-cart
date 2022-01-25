@@ -1,9 +1,8 @@
 import React, { createContext, useReducer } from 'react'
 import type { ReactNode } from 'react'
-import { IProduct } from './product.types'
+import { IProduct } from './allTypes.types'
 import Cookies from 'js-cookie'
 
-console.log('store-cartItems', Cookies.get('cartItems'))
 const init = {
   //darkMode: Cookies.get('darkMode' === 'ON' ? true : false),
   darkMode: false,
@@ -41,12 +40,12 @@ export enum ActionType {
   PAY_RESET = 'PAY_RESET',
 }
 
-export type Dispatch = (action: ActionType) => void
-export type State = typeof init
+export type IDispatch = (action: ActionType) => void
+export type IState = typeof init
 
 export interface Istore {
-  state: State
-  dispatch: Dispatch
+  state: Istore
+  dispatch: IDispatch
 }
 
 export interface IAction {
@@ -56,7 +55,7 @@ export interface IAction {
 
 export const Store = createContext<Istore | undefined>(undefined)
 
-const reducer = (state: State, action: IAction) => {
+const reducer = (state: IState, action: IAction) => {
   switch (action.type) {
     case ActionType.DARK_MODE_ON:
       return { ...state, darkMode: true }

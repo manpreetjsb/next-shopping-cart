@@ -32,7 +32,7 @@ const Payments = () => {
     }
   }, [])
 
-  const submitHandler = (e: { preventDefault: () => void }) => {
+  const submitHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     closeSnackbar()
     e.preventDefault()
     if (!paymentMethod) {

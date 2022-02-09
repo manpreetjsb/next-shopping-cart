@@ -56,7 +56,7 @@ const Layout: React.FC<props> = ({ title, description, children }) => {
   }
   const changeThemeHandler = () => {
     dispatch({
-      mode: darkMode ? ActionType.DARK_MODE_OFF : ActionType.DARK_MODE_ON,
+      type: darkMode ? ActionType.DARK_MODE_OFF : ActionType.DARK_MODE_ON,
     })
     const newDarkMode = !darkMode
 
